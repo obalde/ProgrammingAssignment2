@@ -21,7 +21,7 @@ makeCacheMatrix <- function(x = matrix()) {
 ## This function computes the inverse of the special "matrix" returned by makeCacheMatrix above. 
 ## If the inverse has already been calculated (and the matrix has not changed), then the cachesolve 
 ## should retrieve the inverse from the cache.
-## This function needs the package "MASS" to call the function "ginv" (Generalized inverse of a matrix)
+
 
 cacheSolve <- function(x, ...) {
     ## Return a matrix that is the inverse of 'x'
@@ -30,11 +30,9 @@ cacheSolve <- function(x, ...) {
         message("getting cached data")
         return(mat_inv)
     }
-    
-    ## If x is a square matrix the "solve" function is used, otherwise the "ginv" function 
-    ## of the 'MASS' package is used.
-    if (ncol(x)==nrow(x)){
-         return(solve(x))
-    }
-    ginv(x) 
+   
+    data <- x$get()
+    mat_inv <- solve(data, ...)
+    x$setMatInv(mat_inv)
+    mat_inv
 }
